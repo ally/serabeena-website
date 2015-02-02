@@ -35,7 +35,7 @@ return array(
 
 		'user' => 'serabeena',
 
-		'password' => 'vCp_5f0S0oXxSNzh',
+		'password' => 'MbCStQHX_Xq48Oj6',
 
 		'database' => 'serabeena',
   ),
