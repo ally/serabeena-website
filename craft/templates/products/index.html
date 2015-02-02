@@ -1,0 +1,20 @@
+{% extends "_layout" %}
+{% set title = "Products" %}
+
+{% block content %}
+	
+  <div class="container">
+  	{% for entry in craft.entries.section('products').find() %}
+  		<a href="{{ entry.url }}">
+
+        {% set img = entry.images | length ? entry.images : entry.images %}
+        {% for image in img %}
+          <img src="{{ image.getUrl('productIndexThumb') }}">
+        {% endfor %}
+
+        <h3>{{ entry.title }}</h3>
+        
+      </a>
+  	{% endfor %}
+  </div>
+{% endblock %}

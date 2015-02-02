@@ -1,0 +1,41 @@
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $alt-type;
+  line-height: 1;
+}
+
+section p {
+  line-height: 1.5;
+}
+
+.hero-header {
+  font-size: $mega-font-size;
+}
+
+@mixin large-header {
+  font-family: $alt-type;
+  font-size: $medium-font-size;
+  @include media-from($bp-small) {
+    font-size: $huge-font-size;
+  }
+}
+
+.centered {
+  text-align: center;
+}
+
+.caption {
+  display: block;
+  font-family: $base-type;
+  font-size: $base-font-size;
+  color: $type-color;
+  margin-top: 0.5em;
+  font-style: normal;
+}
+
+.intro-home {
+  @extend .centered;
+  padding-left: 20%;
+  padding-right: 20%;
+  font-size: $medium-font-size;
+}

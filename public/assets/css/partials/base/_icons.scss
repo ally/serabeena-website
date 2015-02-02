@@ -1,0 +1,50 @@
+.play {
+
+  $triangle-width: 32px;
+  $triangle-height: 25px;
+
+  display: block;
+  @include hide-text;
+  height: $play-icon-size;
+  width: $play-icon-size;
+  border-radius: $play-icon-size;
+  border: 5px solid;
+  border-color: $link-color;
+  &:after {
+    display: block;
+    content: '';
+    width: 0;
+    height: 0;
+    margin-left: ($play-icon-size - $triangle-width)/1.8;
+    margin-top: ($play-icon-size - $triangle-height)/3.2;
+    border-style: solid;
+    border-width: $triangle-width/2 0 $triangle-width/2 $triangle-height;
+    border-color: transparent;
+    border-left-color: $link-color;
+  } 
+}
+
+a.icon-social {
+  display: inline-block;
+  text-decoration: none;
+  @include transform(scale(1));
+  @include transition (transform 0.1s linear);
+  margin-right: 1em;
+  &.last {
+    margin-right: 0;
+  }
+  span {
+    display: none;
+  }
+  &:hover {
+    @include transform(scale(1.15));  
+  }
+  svg {
+    display: block;
+    height: 24px;
+    width: 24px;
+    path {
+      fill: white;
+    }
+  }
+}

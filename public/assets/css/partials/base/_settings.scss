@@ -1,0 +1,39 @@
+
+// type sizes
+$mega-font-size:     100px;
+$huge-font-size:      50px;
+$medium-font-size:    26px;
+$mid-font-size:       22px;
+$base-font-size:      16px;
+$tiny-font-size:      12px;
+
+
+// typefaces
+$base-type:   "proxima-nova-soft", "Helvetica", sans-serif;
+$alt-type:                   "peachy-keen", Georgia, serif;
+
+
+
+// colors:
+$background-color:                    #fff;
+$color-light:                      #FEFEFE;
+$color-dark:                          #000;
+$accent-color:                     #23BADF;
+$type-color:                   $color-dark;
+$link-color:                 $accent-color;
+
+
+// layout
+$grid-columns:        12;
+$max-width-wide:  1360px;
+$spacing-unit:      40px;
+$play-icon-size:    70px;
+
+
+
+// breakpoints
+$bp-small:     620px;
+$bp-med:       800px;
+$bp-mid:      1000px;
+$bp-large:    1200px;
+$bp-full:    $max-width-wide;

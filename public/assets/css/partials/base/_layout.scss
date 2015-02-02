@@ -1,0 +1,87 @@
+body * {
+  @include box-sizing(border-box);
+}
+div, section, article, header, footer, nav {
+  @include box-sizing(border-box);
+}
+
+main {
+  padding-bottom: $spacing-unit*2;
+  padding-top: $spacing-unit*2;
+}
+
+
+.container {
+  @include content-block;
+}
+
+.module {
+  @include content-block;
+  @include outer-container;
+  margin-bottom: $spacing-unit;
+  margin-top: $spacing-unit;
+  
+}
+
+.clear-row {
+  width: 100%;
+  clear: both;
+  background: rgba(limegreen, 0.3);
+  @include media-from($bp-med) {
+    padding-bottom: $spacing-unit;
+  }
+}
+
+.grid {
+  img {
+    display: block;
+    float: left;
+  }
+}
+
+.grid-one-half { 
+  @include media-from($bp-med) { 
+    width: 50%;
+    float: left;
+    // @include span-columns($grid-columns * 1/2, block-collapse);
+
+  }
+}
+
+.grid-one-third { 
+  @include media-from($bp-med) {
+    @include span-columns($grid-columns * 1/3);
+    // @include omega(3n);
+  }
+  img {
+    width: 100%;
+  }
+}
+
+.grid-two-thirds {
+  @include media-from($bp-med) {
+    @include span-columns($grid-columns * 2/3);
+    // @include omega(3n);
+  }
+}
+
+.omega {
+  @include omega;
+}
+
+.float-right {
+  float: right;
+}
+
+.block {
+  background: rgba(pink, 0.5);
+  border: 1px solid pink;
+  text-align: center;
+  padding: $spacing-unit;
+
+}
+
+// for divs that just need relative positioning:
+.relative {
+  position: relative;
+}

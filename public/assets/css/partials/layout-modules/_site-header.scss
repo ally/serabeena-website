@@ -1,0 +1,128 @@
+header {
+  z-index: 10;
+}
+header .container {
+  @include content-block;
+}
+
+.site-header {
+  // border: 2px solid red;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: $accent-color;
+  @include transition(transform 0.5s 0.5s ease-in-out);
+  .container {
+    @include simple-grid(2);
+    text-align: center;
+    position: relative;
+    width: 100%;
+    padding-top: $spacing-unit/1.5;
+    padding-bottom: $spacing-unit/1.5;
+    @include clearfix;
+  }
+  // div {background: rgba(red, 0.7)}
+
+  .site-title {
+    text-align: left;
+  }
+
+  .menu {
+    text-align: right; 
+    font-family: $alt-type;
+    font-size: $medium-font-size;
+
+    span {
+      display: none;
+    }
+    p {
+      margin: 0;
+      line-height: 1;
+      cursor: pointer;
+      &:after {
+        content: " ";    
+        border-color: $color-light;
+        border-style: solid none double;
+        border-width: 3px 0 9px;
+        display: inline-block;
+        height: 3px;
+        width: 1.25rem;
+        margin-left: 0.5em;
+        margin-top: 3px;
+        vertical-align: top;
+        .visible & {
+          border: none;
+          content: "×";
+          font-size: 42px;
+          height: auto;
+          width: auto;
+          height: 32px;
+          vertical-align: middle;
+          margin-top: 0;
+        }
+      }
+    }
+  }
+  h1 {
+    font-family: $base-type;
+    font-size: $mid-font-size;
+    line-height: 1;
+  }
+  a {
+    text-decoration: none;
+    color: $color-light;
+  }
+  
+  svg {
+    display: block;  
+    margin: 0 auto;
+    path {
+      fill: $type-color;
+    }
+    width: 95px;
+    height: 70px;
+  }
+
+  .logo {
+    img {
+      height: 7em;
+      @include transition(height 0.35s ease-in-out);
+    } 
+  }
+
+
+  &.headroom--not-top.slideUp {
+    @include transition-delay(1s);
+  }
+
+  &.headroom--not-top {
+    
+    background-color: rgba(black, 0.4);
+    .logo {
+      img {
+        width: auto;
+        height: 3em;
+      } 
+    }
+  }
+
+  &.slideDown {
+    @include transform(translateY(0));
+  }
+
+  &.slideUp {
+    @include transform(translateY(-100%));
+  }
+
+  #overlay & {
+    position: relative;
+  }
+
+  .nav-open & {
+    background-color: transparent !important;
+  }
+
+}
+
+

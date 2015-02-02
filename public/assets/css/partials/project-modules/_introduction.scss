@@ -1,0 +1,23 @@
+.introduction {
+  font-size: $huge-font-size;
+  font-family: $alt-type;
+  padding-top: $spacing-unit;
+  padding-bottom: $spacing-unit;
+  background-color: $link-color;
+  p {
+    line-height: 1.3;
+    margin: 0;
+  }
+}
+
+section.project {
+  position: relative;
+  &:before {
+    position: absolute;
+    content: '';
+    height: 400px;
+    width: 100%;
+    top: 0;
+    left: 0;
+  }
+}

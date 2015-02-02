@@ -1,0 +1,16 @@
+.text-module {
+  blockquote {
+    margin: 0;
+    @include large-header;
+    @extend .centered;
+    p {
+      line-height: 1.2;
+    }
+    cite {
+      @extend .caption;
+    }
+  }
+  h1 {
+    font-size: $huge-font-size;
+  }
+}

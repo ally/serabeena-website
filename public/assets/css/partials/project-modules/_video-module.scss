@@ -1,0 +1,11 @@
+.video-module {
+  position: relative;
+  @include clearfix;
+  .play {
+    position: absolute;
+    @include calc(left, '50% - #{$play-icon-size/2}');
+    @include calc(top, '50% - #{$play-icon-size/2}');
+    @include transition(all 0.35s ease-in-out);
+    max-height: $play-icon-size;
+  }
+}

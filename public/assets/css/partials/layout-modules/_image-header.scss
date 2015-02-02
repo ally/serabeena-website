@@ -1,0 +1,22 @@
+.image-header {
+  background-size: cover;
+  color: $color-light;
+  padding-top: 15%;
+  padding-bottom: 15%;
+  background-color: $link-color;
+  background-blend-mode: multiply;
+  // padding-bottom: 46%;
+  // img {
+  //   position: absolute;
+  //   width: 100%;
+  //   max-width: none;
+  // }
+  h1 {
+    font-size: $mega-font-size;
+    text-align: center;
+    @include media-from($bp-med) {
+      max-width: 70%;
+      margin: 0 auto;
+    }
+  }
+}
