@@ -3,6 +3,27 @@
 // Path to your craft/ folder
 $craftPath = '../craft';
 
+// Check the SERVER_NAME variable ourselves
+switch ($_SERVER['SERVER_NAME']) 
+{    
+  // If the SERVER_NAME variable matches our case, 
+  // assign the CRAFT_ENVIRONMENT variable a keyword 
+  // that identifies this environment that we can 
+  // use in our multi-environment config
+
+  case 'serabeena.com.au' :
+    define('CRAFT_ENVIRONMENT', 'live');
+    break;
+
+  case 'serabeena.eu1.frbit.net' :
+    define('CRAFT_ENVIRONMENT', 'stage');
+    break;
+
+  default :
+    define('CRAFT_ENVIRONMENT', 'local');
+    break;
+}
+
 // Do not edit below this line
 $path = rtrim($craftPath, '/').'/app/index.php';
 
