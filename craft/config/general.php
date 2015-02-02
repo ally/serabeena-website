@@ -19,7 +19,7 @@
 
     'stage' => array(
       // Config overrides for our staging environment
-      'siteUrl' => '',
+      'siteUrl' => 'http://serabeena.eu1.frbit.net/',
       'devMode' => true,
       'omitScriptNameInUrls' => true,
     ),

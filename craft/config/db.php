@@ -31,13 +31,13 @@ return array(
   ),
 
   'stage' => array(
-    'server' => 'yourstruly.mysql.eu1.frbit.com',
+    'server' => 'serabeena.mysql.eu1.frbit.com',
 
 		'user' => 'serabeena',
 
-		'password' => 'zuAVAKkmjSewtTpM',
+		'password' => 'vCp_5f0S0oXxSNzh',
 
-		'database' => 'yourstruly',
+		'database' => 'serabeena',
   ),
 
   'local' => array(

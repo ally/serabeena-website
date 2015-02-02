@@ -14,10 +14,10 @@ section p {
 .hero-header {
   font-size: 100px; }
 
-.centered, .intro-home, .text-module blockquote {
+.centered, .intro-home {
   text-align: center; }
 
-.caption, .text-module blockquote cite {
+.caption {
   display: block;
   font-family: "proxima-nova-soft", "Helvetica", sans-serif;
   font-size: 16px;
@@ -28,7 +28,8 @@ section p {
 .intro-home {
   padding-left: 20%;
   padding-right: 20%;
-  font-size: 26px; }
+  font-size: 26px;
+  margin-top: 80px; }
 
 body * {
   -webkit-box-sizing: border-box;
@@ -42,7 +43,7 @@ div, section, article, header, footer, nav {
 
 main {
   padding-bottom: 80px;
-  padding-top: 80px; }
+  padding-top: 160px; }
 
 .container {
   width: 100%;
@@ -843,13 +844,15 @@ header .container {
   .site-header .menu {
     text-align: right;
     font-family: "peachy-keen", Georgia, serif;
-    font-size: 26px; }
+    font-size: 26px;
+    float: right; }
     .site-header .menu span {
       display: none; }
     .site-header .menu p {
       margin: 0;
       line-height: 1;
-      cursor: pointer; }
+      cursor: pointer;
+      float: right; }
       .site-header .menu p:after {
         content: " ";
         border-color: #fefefe;
@@ -859,7 +862,7 @@ header .container {
         height: 3px;
         width: 1.25rem;
         margin-left: 0.5em;
-        margin-top: 3px;
+        margin-top: 10px;
         vertical-align: top; }
         .visible .site-header .menu p:after {
           border: none;
@@ -869,14 +872,21 @@ header .container {
           width: auto;
           height: 32px;
           vertical-align: middle;
-          margin-top: 0; }
+          margin-top: -15px; }
   .site-header h1 {
     font-family: "proxima-nova-soft", "Helvetica", sans-serif;
     font-size: 22px;
     line-height: 1; }
   .site-header a {
     text-decoration: none;
-    color: #fefefe; }
+    color: #fefefe;
+    background: url(../img/serabeena-wordmark.svg) center center no-repeat;
+    background-size: 100%;
+    display: block;
+    width: 180px;
+    height: 36px; }
+    .site-header a span {
+      display: none; }
   .site-header svg {
     display: block;
     margin: 0 auto;
@@ -893,11 +903,9 @@ header .container {
     -webkit-transition-delay: 1s;
     -moz-transition-delay: 1s;
     transition-delay: 1s; }
-  .site-header.headroom--not-top {
-    background-color: rgba(0, 0, 0, 0.4); }
-    .site-header.headroom--not-top .logo img {
-      width: auto;
-      height: 3em; }
+  .site-header.headroom--not-top .logo img {
+    width: auto;
+    height: 3em; }
   .site-header.slideDown {
     -webkit-transform: translateY(0);
     -moz-transform: translateY(0);
@@ -953,7 +961,7 @@ header .container {
     margin: 0 auto;
     padding-left: 20px;
     padding-right: 20px;
-    margin-top: 80px;
+    margin-top: 40px;
     font-family: "peachy-keen", Georgia, serif;
     text-align: center; }
     @media screen and (min-width: 620px) {
@@ -1062,59 +1070,13 @@ footer.footer {
         max-width: 70%;
         margin: 0 auto; } }
 
-.introduction {
-  font-size: 50px;
-  font-family: "peachy-keen", Georgia, serif;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #23badf; }
-  .introduction p {
-    line-height: 1.3;
-    margin: 0; }
-
-section.project {
-  position: relative; }
-  section.project:before {
-    position: absolute;
-    content: '';
-    height: 400px;
-    width: 100%;
-    top: 0;
-    left: 0; }
-
-.text-module blockquote {
-  margin: 0;
-  font-family: "peachy-keen", Georgia, serif;
-  font-size: 26px; }
+article.product {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px; }
   @media screen and (min-width: 620px) {
-    .text-module blockquote {
-      font-size: 50px; } }
-  .text-module blockquote p {
-    line-height: 1.2; }
-.text-module h1 {
-  font-size: 50px; }
-
-.video-module {
-  position: relative; }
-  .video-module:after {
-    content: "";
-    display: table;
-    clear: both; }
-  .video-module .play {
-    position: absolute;
-    left: -webkit-calc(50% - 35px);
-    left: calc(50% - 35px);
-    top: -webkit-calc(50% - 35px);
-    top: calc(50% - 35px);
-    -webkit-transition: all 0.35s ease-in-out;
-    -moz-transition: all 0.35s ease-in-out;
-    transition: all 0.35s ease-in-out;
-    max-height: 70px; }
-
-section.home {
-  padding-top: 40px;
-  padding-bottom: 40px; }
-  section.home:after {
-    content: "";
-    display: table;
-    clear: both; }
+    article.product {
+      padding-left: 40px;
+      padding-right: 40px; } }

@@ -1,9 +1,15 @@
+{% set bodyClass = "product-page" %}
 {% extends "_layout" %}
 
 {% block content %}
-	<article>
+	<article class="product">
 		<h1>{{ entry.title }}</h1>
 		
 		{{ entry.body }}
+
+    {% set img = entry.images | length ? entry.images %}
+    {% for image in img %}
+      <img src="{{ image.getUrl() }}">
+    {% endfor %}
 	</article>
 {% endblock %}

@@ -32,7 +32,11 @@ header .container {
     text-align: right; 
     font-family: $alt-type;
     font-size: $medium-font-size;
-
+    // background-color: rgba(0,0,0,0.1);
+    float: right;
+    // width: 1.25rem;
+    // @include calc(width, "1.25rem + 10px");
+    // padding: 0 10px;
     span {
       display: none;
     }
@@ -40,6 +44,11 @@ header .container {
       margin: 0;
       line-height: 1;
       cursor: pointer;
+      // width: 1.25rem;
+      // background-color: rgba(255,0,0,0.1);
+      // width: 1.25rem;
+      // padding: 10px;
+      float: right;
       &:after {
         content: " ";    
         border-color: $color-light;
@@ -49,8 +58,10 @@ header .container {
         height: 3px;
         width: 1.25rem;
         margin-left: 0.5em;
-        margin-top: 3px;
+        margin-top: 10px;
         vertical-align: top;
+        
+
         .visible & {
           border: none;
           content: "×";
@@ -59,7 +70,7 @@ header .container {
           width: auto;
           height: 32px;
           vertical-align: middle;
-          margin-top: 0;
+          margin-top: -15px;
         }
       }
     }
@@ -68,10 +79,19 @@ header .container {
     font-family: $base-type;
     font-size: $mid-font-size;
     line-height: 1;
+
   }
   a {
     text-decoration: none;
     color: $color-light;
+    background: url("../img/serabeena-wordmark.svg") center center no-repeat;
+    background-size: 100%;
+    display: block;
+    width: 180px;
+    height: 36px;
+    span {
+      display: none;
+    }
   }
   
   svg {
@@ -98,7 +118,7 @@ header .container {
 
   &.headroom--not-top {
     
-    background-color: rgba(black, 0.4);
+    // background-color: rgba(black, 0.4);
     .logo {
       img {
         width: auto;
