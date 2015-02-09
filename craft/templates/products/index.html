@@ -1,20 +1,23 @@
 {% extends "_layout" %}
 {% set title = "Products" %}
+{% set bodyClass = "product-index" %}
 
 {% block content %}
-	
-  <div class="container">
+
+  <article class="product-list container">
   	{% for entry in craft.entries.section('products').find() %}
-  		<a href="{{ entry.url }}">
-
-        {% set img = entry.images | length ? entry.images : entry.images %}
-        {% for image in img %}
-          <img src="{{ image.getUrl('productIndexThumb') }}">
-        {% endfor %}
-
-        <h3>{{ entry.title }}</h3>
-        
+      {% set img = entry.images | length ? entry.images.first() %}
+  		<a href="{{ entry.url }}" class="product-intro-block {{ img is empty ? "no-image" }}">
+        {% if img %}
+          <img src="{{ img.getUrl('productIndexThumb') }}">
+        {% else %}
+          <img src="{{ siteUrl }}Build/assets/img/placeholder.png">
+        {% endif %}
+        <div class="product-overlay-hover">
+          <h3>{{ entry.title }}</h3>
+        </div>
       </a>
   	{% endfor %}
-  </div>
+  </article>
+
 {% endblock %}

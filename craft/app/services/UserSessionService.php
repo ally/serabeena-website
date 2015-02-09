@@ -282,7 +282,7 @@ class UserSessionService extends \CWebUser
 	/**
 	 * Authorizes the user to perform an action for the duration of the session.
 	 *
-	 * @param stirng $action
+	 * @param string $action
 	 *
 	 * @return null
 	 */
@@ -595,18 +595,18 @@ class UserSessionService extends \CWebUser
 			{
 				$this->changeIdentity($id, $this->_identity->getName(), $states);
 
-				if ($this->authTimeout)
-				{
-					if ($this->allowAutoLogin)
-					{
-						$user = craft()->users->getUserById($id);
+				$user = craft()->users->getUserById($id);
 
-						if ($user)
+				if ($user)
+				{
+					if ($this->authTimeout)
+					{
+						if ($this->allowAutoLogin)
 						{
 							// Save the necessary info to the identity cookie.
 							$sessionToken = StringHelper::UUID();
 							$hashedToken = craft()->security->hashData(base64_encode(serialize($sessionToken)));
-							$uid = craft()->users->handleSuccessfulLogin($user, $hashedToken);
+							$uid = $this->storeSessionToken($user, $hashedToken);
 
 							$data = array(
 								$this->getName(),
@@ -621,13 +621,15 @@ class UserSessionService extends \CWebUser
 						}
 						else
 						{
-							throw new Exception(Craft::t('Could not find a user with Id of {userId}.', array('{userId}' => $this->getId())));
+							throw new Exception(Craft::t('{class}.allowAutoLogin must be set true in order to use cookie-based authentication.', array('{class}' => get_class($this))));
 						}
 					}
-					else
-					{
-						throw new Exception(Craft::t('{class}.allowAutoLogin must be set true in order to use cookie-based authentication.', array('{class}' => get_class($this))));
-					}
+
+					craft()->users->updateUserLoginInfo($user);
+				}
+				else
+				{
+					throw new Exception(Craft::t('Could not find a user with Id of {userId}.', array('{userId}' => $this->getId())));
 				}
 
 				$this->_sessionRestoredFromCookie = false;
@@ -695,6 +697,25 @@ class UserSessionService extends \CWebUser
 	}
 
 	/**
+	 * Saves a new session record for a given user.
+	 *
+	 * @param UserModel $user
+	 * @param string    $sessionToken
+	 *
+	 * @return string The session's UID.
+	 */
+	public function storeSessionToken(UserModel $user, $sessionToken)
+	{
+		$sessionRecord = new SessionRecord();
+		$sessionRecord->userId = $user->id;
+		$sessionRecord->token = $sessionToken;
+
+		$sessionRecord->save();
+
+		return $sessionRecord->uid;
+	}
+
+	/**
 	 * Returns a login error message by a given error code.
 	 *
 	 * @param $errorCode The login error code.
@@ -753,6 +774,11 @@ class UserSessionService extends \CWebUser
 			case UserIdentity::ERROR_NO_CP_OFFLINE_ACCESS:
 			{
 				$error = Craft::t('You cannot access the CP while the system is offline with that account.');
+				break;
+			}
+			case UserIdentity::ERROR_PENDING_VERIFICATION:
+			{
+				$error = Craft::t('Account has not been activated.');
 				break;
 			}
 			default:

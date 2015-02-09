@@ -1,15 +1,45 @@
-{% set bodyClass = "product-page" %}
 {% extends "_layout" %}
+
+{% set bodyClass = "product-page" %}
+{% set share_text = "#{entry.title} at Serabeena #{entry.url}" %}
+
 
 {% block content %}
 	<article class="product">
-		<h1>{{ entry.title }}</h1>
-		
-		{{ entry.body }}
+    <div class="row">
+      <div class="meta">
+  		  <h1>{{ entry.title }}</h1>
+        <div class="share-module">
+          {% include 'partials/_share' with { 
+            entry : entry, 
+            share_text : share_text 
+          } %}
+        </div>
+      </div>
 
-    {% set img = entry.images | length ? entry.images %}
-    {% for image in img %}
-      <img src="{{ image.getUrl() }}">
-    {% endfor %}
+      <div class="body">
+  		  {{ entry.body }}
+      </div>
+    </div>
+
+    {% set images = entry.images %}
+    
+    {% if images | length %}
+      <div class="gallery royalSlider rsDefault visibleNearby">
+
+        {% for image in images %}
+          <!-- <img src="{{ image.getUrl() }}"> -->
+          <a class="rsImg" href="{{ image.getUrl() }}">
+            
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
 	</article>
+  <article class="more">
+    {% include 'products/_related' with {
+      current_entry : entry
+  } %}
+  </article>
 {% endblock %}

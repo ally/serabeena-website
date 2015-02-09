@@ -1,0 +1,5 @@
+{% set more = craft.entries.section(['products']).id('not ' ~ current_entry.id).order('RAND()').limit(3) %}
+
+{% for entry in more %}
+  {{ entry.title }}
+{% endfor %}

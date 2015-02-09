@@ -1068,7 +1068,7 @@ class ElementsService extends BaseApplicationComponent
 
 			if (!$elementRecord)
 			{
-				throw new Exception(Craft::t('No element exists with the ID “{id}”', array('id' => $element->id)));
+				throw new Exception(Craft::t('No element exists with the ID “{id}”.', array('id' => $element->id)));
 			}
 		}
 		else
@@ -1614,6 +1614,15 @@ class ElementsService extends BaseApplicationComponent
 
 				foreach ($records as $record)
 				{
+					// If this element still has any children, move them up before the one getting deleted.
+					$children = $record->children()->findAll();
+
+					foreach ($children as $child)
+					{
+						$child->moveBefore($record);
+					}
+
+					// Delete this element's node
 					$record->deleteNode();
 				}
 			}
@@ -1627,11 +1636,13 @@ class ElementsService extends BaseApplicationComponent
 			{
 				$condition = array('id' => $elementIds[0]);
 				$matrixBlockCondition = array('ownerId' => $elementIds[0]);
+				$searchIndexCondition = array('elementId' => $elementIds[0]);
 			}
 			else
 			{
 				$condition = array('in', 'id', $elementIds);
 				$matrixBlockCondition = array('in', 'ownerId', $elementIds);
+				$searchIndexCondition = array('in', 'elementId', $elementIds);
 			}
 
 			// First delete any Matrix blocks that belong to this element(s)
@@ -1646,7 +1657,11 @@ class ElementsService extends BaseApplicationComponent
 				craft()->matrix->deleteBlockById($matrixBlockIds);
 			}
 
+			// Delete the elements table rows, which will cascade across all other InnoDB tables
 			$affectedRows = craft()->db->createCommand()->delete('elements', $condition);
+
+			// The searchindex table is MyISAM, though
+			craft()->db->createCommand()->delete('searchindex', $searchIndexCondition);
 
 			if ($transaction !== null)
 			{

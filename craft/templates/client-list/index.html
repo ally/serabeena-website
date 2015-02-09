@@ -1,0 +1,21 @@
+{% extends "_layout" %}
+
+{% set bodyClass = "text-page client-list" %}
+
+{% block content %}
+  <article class="container">
+    <h1>{{ entry.title }}</h1>
+    <ul class="plain">
+      {% for block in entry.list %}
+        <li>
+          {% if block.clientUrl | length %}
+            <a href="{{ block.clientUrl }}">{{ block.clientName }}</a>
+          {% else %}
+            {{ block.clientName }}
+          {% endif %}
+          <span>{{ block.location }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  </article>
+{% endblock %}

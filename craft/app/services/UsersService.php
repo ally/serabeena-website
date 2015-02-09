@@ -247,7 +247,7 @@ class UsersService extends BaseApplicationComponent
 
 			if (!$userRecord)
 			{
-				throw new Exception(Craft::t('No user exists with the ID “{id}”', array('id' => $user->id)));
+				throw new Exception(Craft::t('No user exists with the ID “{id}”.', array('id' => $user->id)));
 			}
 
 			$oldUsername = $userRecord->username;
@@ -440,7 +440,15 @@ class UsersService extends BaseApplicationComponent
 	 */
 	public function sendActivationEmail(UserModel $user)
 	{
-		$url = $this->getPasswordResetUrl($user);
+		// If the user doesn't have a password yet, use a Password Reset URL
+		if (!$user->password)
+		{
+			$url = $this->getPasswordResetUrl($user);
+		}
+		else
+		{
+			$url = $this->getEmailVerifyUrl($user);
+		}
 
 		return craft()->email->sendEmailByKey($user, 'account_activation', array(
 			'link' => TemplateHelper::getRaw($url),
@@ -458,20 +466,7 @@ class UsersService extends BaseApplicationComponent
 	 */
 	public function sendNewEmailVerifyEmail(UserModel $user)
 	{
-		$userRecord = $this->_getUserRecordById($user->id);
-		$unhashedVerificationCode = $this->_setVerificationCodeOnUserRecord($userRecord);
-		$userRecord->save();
-
-		if ($user->can('accessCp'))
-		{
-			$url = UrlHelper::getActionUrl('users/verifyemail', array('code' => $unhashedVerificationCode, 'id' => $userRecord->uid), craft()->request->isSecureConnection() ? 'https' : 'http');
-		}
-		else
-		{
-			// We want to hide the CP trigger if they don't have access to the CP.
-			$path = craft()->config->get('actionTrigger').'/users/verifyemail';
-			$url = UrlHelper::getSiteUrl($path, array('code' => $unhashedVerificationCode, 'id' => $userRecord->uid), craft()->request->isSecureConnection() ? 'https' : 'http');
-		}
+		$url = $this->getEmailVerifyUrl($user);
 
 		return craft()->email->sendEmailByKey($user, 'verify_new_email', array(
 			'link' => TemplateHelper::getRaw($url),
@@ -494,6 +489,33 @@ class UsersService extends BaseApplicationComponent
 		return craft()->email->sendEmailByKey($user, 'forgot_password', array(
 			'link' => TemplateHelper::getRaw($url),
 		));
+	}
+
+	/**
+	 * Sets a new verification code on a user, and returns their new Email Verification URL.
+	 *
+	 * @param UserModel $user The user that should get the new Email Verification URL.
+	 *
+	 * @return string The new Email Verification URL.
+	 */
+	public function getEmailVerifyUrl(UserModel $user)
+	{
+		$userRecord = $this->_getUserRecordById($user->id);
+		$unhashedVerificationCode = $this->_setVerificationCodeOnUserRecord($userRecord);
+		$userRecord->save();
+
+		if ($user->can('accessCp'))
+		{
+			$url = UrlHelper::getActionUrl('users/verifyemail', array('code' => $unhashedVerificationCode, 'id' => $userRecord->uid), craft()->request->isSecureConnection() ? 'https' : 'http');
+		}
+		else
+		{
+			// We want to hide the CP trigger if they don't have access to the CP.
+			$path = craft()->config->get('actionTrigger').'/users/verifyemail';
+			$url = UrlHelper::getSiteUrl($path, array('code' => $unhashedVerificationCode, 'id' => $userRecord->uid), craft()->request->isSecureConnection() ? 'https' : 'http');
+		}
+
+		return $url;
 	}
 
 	/**
@@ -613,8 +635,25 @@ class UsersService extends BaseApplicationComponent
 	 * @param string    $sessionToken The session token.
 	 *
 	 * @return string The session’s UID.
+	 * @deprecated Deprecated in 2.3. Use {@link UsersService::updateUserLoginInfo() `craft()->users->updateUserLoginInfo()`}
+	 *             and {@link UserSessionService::storeSessionToken() `craft()->userSession->storeSessionToken()`} instead.
 	 */
 	public function handleSuccessfulLogin(UserModel $user, $sessionToken)
+	{
+		$this->updateUserLoginInfo($user);
+
+		return craft()->userSession->storeSessionToken($user, $sessionToken);
+	}
+
+	/**
+	 * Updates a user's record for a successful login.
+	 *
+	 * @param UserModel $user
+	 *
+	 * @return bool
+	 * @throws Exception
+	 */
+	public function updateUserLoginInfo(UserModel $user)
 	{
 		$userRecord = $this->_getUserRecordById($user->id);
 
@@ -625,14 +664,7 @@ class UsersService extends BaseApplicationComponent
 		$userRecord->verificationCode = null;
 		$userRecord->verificationCodeIssuedDate = null;
 
-		$sessionRecord = new SessionRecord();
-		$sessionRecord->userId = $user->id;
-		$sessionRecord->token = $sessionToken;
-
-		$userRecord->save();
-		$sessionRecord->save();
-
-		return $sessionRecord->uid;
+		return $userRecord->save();
 	}
 
 	/**
@@ -1229,7 +1261,7 @@ class UsersService extends BaseApplicationComponent
 
 			$ids = craft()->db->createCommand()->select('id')
 				->from('users')
-				->where('pending=1 AND verificationCodeIssuedDate < :pastTime', array('pastTime' => $pastTime))
+				->where('pending=1 AND verificationCodeIssuedDate < :pastTime', array(':pastTime' => $pastTime))
 				->queryColumn();
 
 			$affectedRows = craft()->db->createCommand()->delete('elements', array('in', 'id', $ids));
@@ -1240,6 +1272,9 @@ class UsersService extends BaseApplicationComponent
 			}
 		}
 	}
+
+	// Events
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Fires an 'onBeforeSaveUser' event.
@@ -1467,7 +1502,7 @@ class UsersService extends BaseApplicationComponent
 
 		if (!$userRecord)
 		{
-			throw new Exception(Craft::t('No user exists with the ID “{id}”', array('id' => $userId)));
+			throw new Exception(Craft::t('No user exists with the ID “{id}”.', array('id' => $userId)));
 		}
 
 		return $userRecord;

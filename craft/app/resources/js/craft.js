@@ -922,6 +922,62 @@ $.extend(Craft,
 		return $ul;
 	},
 
+	appendHeadHtml: function(html)
+	{
+		if (!html)
+		{
+			return;
+		}
+
+		// Prune out any link tags that are already included
+		var $existingCss = $('link[href]');
+
+		if ($existingCss.length)
+		{
+			var existingCss = [];
+
+			for (var i = 0; i < $existingCss.length; i++)
+			{
+				var href = $existingCss.eq(i).attr('href');
+				existingCss.push(href.replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&"));
+			}
+
+			var regexp = new RegExp('<link\\s[^>]*href="(?:'+existingCss.join('|')+')".*?></script>', 'g');
+
+			html = html.replace(regexp, '');
+		}
+
+		$('head').append(html);
+	},
+
+	appendFootHtml: function(html)
+	{
+		if (!html)
+		{
+			return;
+		}
+
+		// Prune out any script tags that are already included
+		var $existingJs = $('script[src]');
+
+		if ($existingJs.length)
+		{
+			var existingJs = [];
+
+			for (var i = 0; i < $existingJs.length; i++)
+			{
+				var src = $existingJs.eq(i).attr('src');
+				existingJs.push(src.replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&"));
+			}
+
+			var regexp = new RegExp('<script\\s[^>]*src="(?:'+existingJs.join('|')+')".*?></script>', 'g');
+
+			html = html.replace(regexp, '');
+		}
+
+		Garnish.$bod.append(html);
+	},
+
 	/**
 	 * Initializes any common UI elements in a given container.
 	 *
@@ -3028,8 +3084,8 @@ Craft.BaseElementIndex = Garnish.Base.extend(
 
 	_onUpdateElements: function(response, append, $newElements)
 	{
-		$('head').append(response.headHtml);
-		Garnish.$bod.append(response.footHtml);
+		Craft.appendHeadHtml(response.headHtml);
+		Craft.appendFootHtml(response.footHtml);
 
 		if (this._isStructureTableDraggingLastElements())
 		{
@@ -3292,8 +3348,8 @@ Craft.BaseElementIndex = Garnish.Base.extend(
 		}
 
 		this._$triggers.insertAfter(this.$selectAllContainer);
-		$('head').append(this.actionsHeadHtml);
-		Garnish.$bod.append(this.actionsFootHtml);
+		Craft.appendHeadHtml(this.actionsHeadHtml);
+		Craft.appendFootHtml(this.actionsFootHtml)
 
 		Craft.initUiElements(this._$triggers);
 
@@ -5954,7 +6010,7 @@ Craft.AssetSelectInput = Craft.BaseElementSelectInput.extend(
 		else
 		{
 			var html = $(data.result.html);
-			$('head').append(data.result.css);
+			Craft.appendHeadHtml(data.result.headHtml);
 			this.selectUploadedFile(Craft.getElementInfo(html));
 		}
 
@@ -6944,7 +7000,6 @@ Craft.DeleteUserModal = Garnish.Modal.extend(
 	$deleteActionRadios: null,
 	$deleteSpinner: null,
 
-	currentPasswordModal: null,
 	userSelect: null,
 	_deleting: false,
 
@@ -6964,7 +7019,7 @@ Craft.DeleteUserModal = Garnish.Modal.extend(
 			).appendTo(Garnish.$bod),
 			$body = $(
 				'<div class="body">' +
-					'<p>'+Craft.t('What do you want to do with the their content?')+'</p>' +
+					'<p>'+Craft.t('What do you want to do with their content?')+'</p>' +
 					'<div class="options">' +
 						'<label><input type="radio" name="contentAction" value="transfer"/> '+Craft.t('Transfer it to:')+'</label>' +
 						'<div id="transferselect'+this.id+'" class="elementselect">' +
@@ -7011,6 +7066,8 @@ Craft.DeleteUserModal = Garnish.Modal.extend(
 			},
 			onSelectElements: $.proxy(function()
 			{
+				this.updateSizeAndPosition();
+
 				if (!this.$deleteActionRadios.first().prop('checked'))
 				{
 					this.$deleteActionRadios.first().click();
@@ -7676,8 +7733,14 @@ Craft.ElementEditor = Garnish.Base.extend(
 	{
 		this.locale = response.locale;
 
-		this.$fieldsContainer.html(response.html)
-		Craft.initUiElements(this.$fieldsContainer);
+		this.$fieldsContainer.html(response.html);
+
+		Garnish.requestAnimationFrame($.proxy(function()
+		{
+			Craft.appendHeadHtml(response.headHtml);
+			Craft.appendFootHtml(response.footHtml);
+			Craft.initUiElements(this.$fieldsContainer);
+		}, this));
 	},
 
 	saveElement: function(ev)
@@ -11310,7 +11373,7 @@ Craft.SlugGenerator = Craft.BaseInputGenerator.extend(
 			sourceVal = Craft.asciiString(sourceVal);
 		}
 
-		// Get the "words".  Split on anything that is not a unicode letter or number.
+		// Get the "words". Split on anything that is not alphanumeric.
 		var words = Craft.filterArray(XRegExp.matchChain(sourceVal, [XRegExp('[\\p{L}\\p{N}]+')]));
 
 		if (words.length)
@@ -12632,6 +12695,8 @@ Craft.TagSelectInput = Craft.BaseElementSelectInput.extend(
 	$addTagInput: null,
 	$spinner: null,
 
+	_ignoreBlur: false,
+
 	init: function(settings)
 	{
 		// Normalize the settings
@@ -12697,6 +12762,12 @@ Craft.TagSelectInput = Craft.BaseElementSelectInput.extend(
 
 		this.addListener(this.$addTagInput, 'blur', function()
 		{
+			if (this._ignoreBlur)
+			{
+				this._ignoreBlur = false;
+				return;
+			}
+
 			setTimeout($.proxy(function()
 			{
 				if (this.searchMenu)
@@ -12773,6 +12844,11 @@ Craft.TagSelectInput = Craft.BaseElementSelectInput.extend(
 						attachToElement: this.$addTagInput,
 						onOptionSelect: $.proxy(this, 'selectTag')
 					});
+
+					this.addListener($menu, 'mousedown', $.proxy(function()
+					{
+						this._ignoreBlur = true;
+					}, this));
 
 					this.searchMenu.show();
 				}

@@ -290,7 +290,7 @@ class TemplatesService extends BaseApplicationComponent
 		{
 			// Replace shortcut "{var}"s with "{{object.var}}"s, without affecting normal Twig tags
 			$formattedTemplate = preg_replace('/(?<![\{\%])\{(?![\{\%])/', '{{object.', $template);
-			$formattedTemplate = preg_replace('/(?<![\}\%])\}(?![\}\%])/', '}}', $formattedTemplate);
+			$formattedTemplate = preg_replace('/(?<![\}\%])\}(?![\}\%])/', '|raw}}', $formattedTemplate);
 			$this->_objectTemplates[$template] = $twig->loadTemplate($formattedTemplate);
 		}
 
@@ -481,8 +481,11 @@ class TemplatesService extends BaseApplicationComponent
 	 */
 	public function includeJs($js, $first = false)
 	{
+		// Trim any whitespace and ensure it ends with a semicolon.
+		$js = trim($js, " \t\n\r\0\x0B;").';';
+
 		$latestBuffer =& $this->_jsBuffers[count($this->_jsBuffers)-1];
-		ArrayHelper::prependOrAppend($latestBuffer, trim($js), $first);
+		ArrayHelper::prependOrAppend($latestBuffer, $js, $first);
 	}
 
 	/**

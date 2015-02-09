@@ -29,7 +29,9 @@ body.noscroll {
 
   nav.navigation {
     @include content-block;
-    margin-top: $spacing-unit;
+    @include media-from($bp-mid) {
+      margin-top: $spacing-unit*3;
+    }
     font-family: $alt-type;
     text-align: center;
     // border: 2px solid black;
