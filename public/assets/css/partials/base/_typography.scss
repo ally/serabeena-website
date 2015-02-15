@@ -8,18 +8,6 @@ section p {
   line-height: 1.5;
 }
 
-.hero-header {
-  font-size: $mega-font-size;
-}
-
-@mixin large-header {
-  font-family: $alt-type;
-  font-size: $medium-font-size;
-  @include media-from($bp-small) {
-    font-size: $huge-font-size;
-  }
-}
-
 .centered {
   text-align: center;
 }
@@ -33,10 +21,3 @@ section p {
   font-style: normal;
 }
 
-.intro-home {
-  @extend .centered;
-  padding-left: 20%;
-  padding-right: 20%;
-  font-size: $medium-font-size;
-  margin-top: $spacing-unit*2;
-}

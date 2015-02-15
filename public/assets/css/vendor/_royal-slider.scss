@@ -129,6 +129,7 @@
   width: 100%;
   height: 100%;
   position: relative;
+  cursor: auto;
 }
 
 .rsPreloader {
@@ -215,13 +216,13 @@ img.rsImg {
   max-width: none;
 }
 
-.grab-cursor {
-  cursor: url(grab.png) 8 8, move;
-}
+// .grab-cursor {
+//   cursor: url(grab.png) 8 8, move;
+// }
 
-.grabbing-cursor {
-  cursor: url(grabbing.png) 8 8, move;
-}
+// .grabbing-cursor {
+//   cursor: url(grabbing.png) 8 8, move;
+// }
 
 .rsNoDrag {
   cursor: auto;
@@ -236,4 +237,36 @@ img.rsImg {
   display: block;
   z-index: 20;
   background: url(blank.gif);
+}
+
+// custom:
+.rsArrow {
+  // width: 20px;
+  // height: 20px;
+}
+.rsArrowLeft, .rsArrowRight {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: 30px; 
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 30px;
+  @include transform(scale(1));
+  @include transition(all 0.15s ease-in-out);
+}
+.rsArrowLeft {
+  background-image: url(img/arrow-left.svg);
+  left: 16px;
+  &:hover {
+    @include transform(scale(1.2) translateX(-4px));
+  }
+}
+.rsArrowRight {
+  background-image: url(img/arrow-right.svg);
+  right: 16px;
+  &:hover {
+    @include transform(scale(1.2) translateX(4px));
+  }
 }

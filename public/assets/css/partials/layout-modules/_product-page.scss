@@ -1,6 +1,5 @@
 article.product {
   @include content-block;
-  
 }
 
 .meta {
@@ -22,6 +21,19 @@ article.product {
 .product-list {
   @include simple-grid(4);
   @include omega(4n);
+}
+
+
+.more {
+  @include content-block;
+  margin-top: $spacing-unit*2;
+  h4 {
+    margin-bottom: 1em;
+  }
+}
+.more-product-list {
+  @include simple-grid(3);
+  @include omega(3n);
 }
 
 .product-intro-block {
@@ -50,7 +62,7 @@ article.product {
     top: 50%;
     text-align: center;
     width: 100%;
-    @include transform(translateY(-20%));
+    @include transform(translateY(0%));
     @include transition(all 0.05s 0.15s linear);
     opacity: 0;
     color: white;
@@ -77,4 +89,8 @@ article.product {
     }
 
   }
+}
+
+.gallery {
+  margin-top: $spacing-unit;
 }

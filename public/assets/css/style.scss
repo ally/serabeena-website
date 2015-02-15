@@ -11,15 +11,15 @@
 @import "partials/base/base";
 
 // vendor
-@import "vendor/magnific";
-@import "vendor/magnific-settings";
+// @import "vendor/magnific";
+// @import "vendor/magnific-settings";
 @import "vendor/royal-slider";
 
 // general layout modules
 @import "partials/layout-modules/site-header";
 @import "partials/layout-modules/navigation";
 @import "partials/layout-modules/footer";
-@import "partials/layout-modules/image-header";
 @import "partials/layout-modules/product-page";
 @import "partials/layout-modules/client-page";
+@import "partials/layout-modules/home-page";
 

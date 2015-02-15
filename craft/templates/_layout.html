@@ -24,14 +24,16 @@
 			{% endblock %}
 		</main>
 		
-		{% include 'partials/_footer' %}
+		{% if not hideFooter is defined %}
+			{% include 'partials/_footer' %}
+		{% endif %}
 
 	</body>
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
 	<script>window.jQuery || document.write('<script src="{{ siteUrl }}Build/assets/js/vendor/jquery-2.1.1.min.js"><\/script>')</script>
-	<!--<script src="//cdn.jsdelivr.net/headroomjs/0.5.0/headroom.min.js"></script>
-	<script src="//cdn.jsdelivr.net/headroomjs/0.5.0/jQuery.headroom.min.js"></script>-->
+	<script src="//cdn.jsdelivr.net/headroomjs/0.5.0/headroom.min.js"></script>
+	<script src="//cdn.jsdelivr.net/headroomjs/0.5.0/jQuery.headroom.min.js"></script>
 	<script src="{{ siteUrl }}Build/assets/js/vendor/jquery.magnific-popup.js" type="text/javascript"></script>
 	<script src="{{ siteUrl }}Build/assets/js/vendor/jquery.royalslider.min.js" type="text/javascript"></script>
 	

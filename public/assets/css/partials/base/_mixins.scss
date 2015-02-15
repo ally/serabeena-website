@@ -64,27 +64,3 @@
 
 // type styles:
 
-@mixin mega-header {
-  font-size: $huge-font-size;
-  text-align: center;
-  @include media-from($bp-med) {
-    font-size: $mega-font-size;
-  }
-}
-
-@mixin large-header {
-  font-size: $medium-font-size;
-  font-family: $alt-type-serif;
-  line-height: 1.2;
-  @include media-from($bp-med) {
-    font-size: $huge-font-size;
-  }
-}
-
-// @mixin triangle-uneven($width, $height, $color) {
-//   width: 0;
-//   height: 0;
-//   border-style: solid;
-//   border-width: 16px 0 16px 25px;
-//   border-color: transparent transparent transparent #007bff;
-// }

@@ -61,42 +61,32 @@ $(function() {
 });
 
 $(function() {
-  var si = $('.royalSlider').royalSlider({
-    loop: false,
+  
+  $('.royalSlider').royalSlider({
+    arrowsNav: true,
+    loop: true,
     keyboardNavEnabled: true,
     controlsInside: false,
     imageScaleMode: 'fill',
     arrowsNavAutoHide: false,
     autoScaleSlider: true, 
-    
+    autoScaleSliderWidth: 1500,     
+    autoScaleSliderHeight: 1000,
     controlNavigation: 'bullets',
     thumbsFitInViewport: false,
     navigateByClick: true,
     startSlideId: 0,
     autoPlay: false,
     transitionType:'move',
+    transitionSpeed: 400,
     globalCaption: true,
     deeplinking: {
       enabled: true,
       change: false
     },
     /* size of all images http://help.dimsemenov.com/kb/royalslider-jquery-plugin-faq/adding-width-and-height-properties-to-images */
-    imgWidth: 1360
-    // imgHeight: 680
-
-
-    // addActiveClass: true,
-    // arrowsNav: true,
-    // arrowsNavAutoHide: false,
-    // autoScaleSlider: true, 
-    // autoScaleSliderWidth: 1440,     
-    // autoScaleSliderHeight: 667,
-    // loop: true,
-    // fadeinLoadedSlide: true,
-    // globalCaption: true,
-    // keyboardNavEnabled: true,
-    // globalCaption: true,
-    // globalCaptionInside: false
-  }).data('royalSlider');
+    imgWidth: 1500,
+    imgHeight: 1000
+  });
 }); 
 

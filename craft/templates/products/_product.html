@@ -25,13 +25,22 @@
     {% set images = entry.images %}
     
     {% if images | length %}
-      <div class="gallery royalSlider rsDefault visibleNearby">
+      <div class="gallery royalSlider">
+
+<!--         <div class="rsContent">
+          <img src="../assets/img/Serabeena-095.jpg" />
+        </div>
+        <div class="rsContent">
+          <img src="../assets/img/Serabeena-115.jpg" />
+        </div>
+        <div class="rsContent">
+          <img src="../assets/img/Serabeena-150.jpg" />
+        </div>   -->              
 
         {% for image in images %}
-          <!-- <img src="{{ image.getUrl() }}"> -->
-          <a class="rsImg" href="{{ image.getUrl() }}">
-            
-          </a>
+          <div class="rsContent">
+            <img src="{{ image.getUrl() }}" />
+          </div>
         {% endfor %}
       </div>
     {% endif %}
@@ -40,6 +49,6 @@
   <article class="more">
     {% include 'products/_related' with {
       current_entry : entry
-  } %}
+    } %}
   </article>
 {% endblock %}

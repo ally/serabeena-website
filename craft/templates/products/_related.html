@@ -1,5 +1,14 @@
 {% set more = craft.entries.section(['products']).id('not ' ~ current_entry.id).order('RAND()').limit(3) %}
 
-{% for entry in more %}
-  {{ entry.title }}
-{% endfor %}
+{% if more|length %}
+
+  <h4>Keep browsing</h4>
+  <div class="more-product-list">
+    {% for entry in more %}
+      {% include 'products/_product-intro' with {
+        entry : entry
+      } %}
+    {% endfor %}
+  </div>
+
+{% endif %}

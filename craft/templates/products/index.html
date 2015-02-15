@@ -6,18 +6,10 @@
 
   <article class="product-list container">
   	{% for entry in craft.entries.section('products').find() %}
-      {% set img = entry.images | length ? entry.images.first() %}
-  		<a href="{{ entry.url }}" class="product-intro-block {{ img is empty ? "no-image" }}">
-        {% if img %}
-          <img src="{{ img.getUrl('productIndexThumb') }}">
-        {% else %}
-          <img src="{{ siteUrl }}Build/assets/img/placeholder.png">
-        {% endif %}
-        <div class="product-overlay-hover">
-          <h3>{{ entry.title }}</h3>
-        </div>
-      </a>
-  	{% endfor %}
+      {% include 'products/_product-intro' with {
+        entry : entry
+      } %}
+    {% endfor %}
   </article>
 
 {% endblock %}
