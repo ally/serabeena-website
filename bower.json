@@ -1,0 +1,26 @@
+{
+  "name": "serabeena",
+  "version": "0.0.0",
+  "homepage": "https://github.com/ally/serabeena-website",
+  "authors": [
+    "Ally <ally@allyelle.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bourbon": "~4.2.2",
+    "jquery": "~2.1.3",
+    "headroom.js": "~0.7.0",
+    "normalize-scss": "~3.0.2",
+    "animate.css": "~3.2.6"
+  },
+  "devDependencies": {
+    "animate.css": "~3.2.6"
+  }
+}

@@ -1,0 +1,24 @@
+// grid
+@import "normalize-scss/normalize";
+@import "bourbon/app/assets/stylesheets/bourbon";
+@import "partials/base/grid-settings";
+@import "vendor/neat/neat";
+
+@import "partials/base/flexbox";
+@import "partials/base/settings";
+@import "partials/base/mixins";
+@import "partials/base/typography";
+@import "partials/base/layout";
+@import "partials/base/icons";
+@import "partials/base/base";
+
+// vendor
+@import "vendor/royal-slider";
+
+// general layout modules
+@import "partials/layout-modules/site-header";
+@import "partials/layout-modules/navigation";
+@import "partials/layout-modules/footer";
+@import "partials/layout-modules/product-page";
+@import "partials/layout-modules/client-page";
+@import "partials/layout-modules/home-page";
