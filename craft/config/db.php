@@ -31,13 +31,14 @@ return array(
   ),
 
   'stage' => array(
-    'server' => 'serabeena.mysql.eu1.frbit.com',
+    // 'server' => 'serabeena.mysql.eu1.frbit.com',
+    'server' => 'mysqlv114',
 
-		'user' => 'serabeena',
+		'user' => 'serabeenadev',
 
 		'password' => 'MbCStQHX_Xq48Oj6',
 
-		'database' => 'serabeena',
+		'database' => 'craftserabeena',
   ),
 
   'local' => array(

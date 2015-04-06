@@ -1,6 +1,6 @@
 {% set img = entry.images | length ? entry.images.first() %}
 
-<a href="{{ entry.url }}" class="product-intro-block {{ img is empty ? "no-image" }}">
+<a href="{{ entry.url }}" class="product-intro-block color-me {{ img is empty ? "no-image" }}">
   {% if img %}
     <img src="{{ img.getUrl('productIndexThumb') }}">
   {% else %}

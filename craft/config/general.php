@@ -15,11 +15,12 @@
     'live' => array(
       // Config overrides for our live environment
       'siteUrl' => 'http://serabeena.com.au/',
+      'omitScriptNameInUrls' => true,
     ),
 
     'stage' => array(
       // Config overrides for our staging environment
-      'siteUrl' => 'http://serabeena.eu1.frbit.net/',
+      'siteUrl' => 'http://serabeena.com/new/',
       'devMode' => true,
       'omitScriptNameInUrls' => true,
     ),
