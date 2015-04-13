@@ -1,1 +1,3 @@
 deny from all
+
+AddType image/svg+xml .svg .svgz

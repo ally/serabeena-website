@@ -6,7 +6,9 @@
 
   <article class="container">
     <h1>{{ entry.title }}</h1>
-    {{ entry.body }}
+    <div class="text-block">
+      {{ entry.body }}
+    </div>
 
     {% if entry.images | length %}
       {% for image in entry.images %}

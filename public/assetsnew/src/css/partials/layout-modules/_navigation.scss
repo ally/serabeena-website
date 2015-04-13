@@ -38,13 +38,18 @@ body.noscroll {
       margin: 0;
       padding: 0;
       list-style: none;
-      
       font-size: $huge-font-size;
       li {
         line-height: 1.3;
       }
       a {
         text-decoration: none;
+        display: block;
+        @include transform(scale(1));
+        @include transition(all 0.2s ease-in-out);
+        &:hover {
+          @include transform(scale(1.05));
+        }
       }
     }
   }

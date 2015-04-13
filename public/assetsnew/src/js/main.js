@@ -38,19 +38,11 @@ $(function() {
 });
 
 
-// $(function() {
-
-//   $( "<div class='clear-row'></div>" ).insertBefore( ".clear" );
-//   $( ".clear-row" ).prev('.grid').addClass( "omega" );
-// });
-
-
 function randOrd() {
   return (Math.round(Math.random())-0.5); 
 }
 
 $(function() {
-  
   var classes = [ 'blue', 'pink', 'yellow', 'purple', 'orange' ];
   classes.sort( randOrd );
   $('.color-me').each(function(i, val) {

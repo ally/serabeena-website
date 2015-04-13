@@ -49,12 +49,15 @@ article.product {
     background-color: $accent-color;
     opacity: 0;
     @include transition(all 0.15s linear);
+    
   }
   img {
     display: block;
     width: 100%;
     opacity: 1;
-    @include transition(all 0.15s linear);
+    @include transform(scale(1) rotate(0deg));
+    @include transition(all 0.25s linear);
+    transition-timing-function: cubic-bezier(0.175, 0.885, 0.470, 1.515);
   }
   h3 {
     position: absolute;
@@ -69,7 +72,7 @@ article.product {
   }
   &:hover {
     .product-overlay-hover {
-      opacity: 0.75;
+      opacity: 0.65;
     }
     h3 {
       opacity: 1;
@@ -77,6 +80,7 @@ article.product {
     }
     img {
       opacity: 0.25;
+      @include transform(scale(1.25) rotate(-3deg));
     }
   }
   &.no-image {

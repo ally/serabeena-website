@@ -7,7 +7,7 @@ header .container {
 
 .site-header {
   width: 100%;
-  position: fixed;
+  // position: fixed;
   top: 0;
   right: 0;
   background-color: $accent-color;
@@ -73,11 +73,12 @@ header .container {
   a {
     text-decoration: none;
     color: $color-light;
-    background: url("../img/serabeena-wordmark.svg") center center no-repeat;
+    background: url("../../img/serabeena-wordmark.png") center center no-repeat;
     background-size: 100%;
     display: block;
     width: 180px;
     height: 36px;
+    white-space: no-wrap;
     span {
       display: none;
     }
@@ -124,7 +125,7 @@ header .container {
   }
 
   #overlay & {
-    position: fixed;
+    // position: fixed;
   }
 
   .nav-open & {

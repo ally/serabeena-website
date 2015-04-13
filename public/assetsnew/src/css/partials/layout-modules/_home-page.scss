@@ -1,7 +1,58 @@
+@include keyframes(springIn) {
+  from {
+    @include transform(scale(0));
+    opacity: 0;
+  }
+  50% {
+   @include transform(scale(0));
+   opacity: 0;
+  }
+  82.5% {
+    @include transform(scale(1.03));
+    @include transition-timing-function(ease-out);
+    opacity: 1;
+  }
+  to {
+    @include transform(scale(1));
+  }
+}
+
+@include keyframes(peekIn) {
+  from {
+    @include transform(translateY(100%));
+  }
+  82.5% {
+    @include transform(translateY(100%));
+  }
+  to {
+    @include transform(translateY(0));
+  }
+}
+
+@include keyframes(oHai) {
+  from {
+    @include transform(translateY(0%));
+  }
+  25% {
+    @include transform(translateY(3%));
+  }
+  50% {
+    @include transform(translateY(0%));
+  }
+  75% {
+    @include transform(translateY(3%));
+  }
+  to {
+    @include transform(translateY(0));
+  }
+}
+
 .intro-home {
+  @include animation-name(springIn);
+  @include animation-duration(0.6s);
   @extend .centered;
-  padding-left: 18%;
-  padding-right: 18%;
+  padding-left: 17%;
+  padding-right: 17%;
   font-size: $big-font-size;
   margin-top: $spacing-unit;
   a {
@@ -33,14 +84,16 @@
       @include transform(scale(1.05));
       background-color: lighten($accent-color, 40%);
       border-radius: 3px;
-      // padding-left: 0.25em;
-      // padding-right: 0.25em;
-      
     }
   }
 }
 
 .home-footer {
   display: block;
-  margin-top: $spacing-unit*2;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: -1;
+  @include animation-name(peekIn);
+  @include animation-duration(1.2s);
 }

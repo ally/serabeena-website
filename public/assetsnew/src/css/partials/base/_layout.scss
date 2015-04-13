@@ -7,7 +7,7 @@ div, section, article, header, footer, nav {
 
 main {
   padding-bottom: $spacing-unit*2;
-  padding-top: $spacing-unit*4;
+  padding-top: $spacing-unit*2;
   .home-page & {
     padding-bottom: 0;
   }
@@ -16,6 +16,13 @@ main {
 
 .container {
   @include content-block;
+  @include clearfix;
+}
+
+.text-block {
+  max-width: 640px;
+  margin: $spacing-unit*1.5 auto;
+  text-align: left;
 }
 
 .row {
