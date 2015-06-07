@@ -1153,6 +1153,13 @@ footer {
   padding-bottom: 20px;
   position: relative;
 }
+@media screen and (min-width: 800px) {
+  .contact-page footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+}
 @media screen and (min-width: 1360px) {
   footer {
     position: fixed;

@@ -172,6 +172,7 @@ header .container{width:100%;max-width:1360px;margin:0 auto;padding-left:20px;pa
 20%,80%{margin-top:-5px}
 100%{margin-top:0}}
 footer{padding-top:20px;padding-bottom:20px;position:relative}
+@media screen and (min-width:800px){.contact-page footer{position:fixed;bottom:0;width:100%}}
 @media screen and (min-width:1360px){footer{position:fixed;bottom:0;width:100%}}
 img.logo{max-width:100px;float:left}
 .balloon-container{float:right;margin-left:40px;margin-top:-80px;height:130px;position:absolute;bottom:0;right:40px;z-index:10;overflow:hidden}
