@@ -53,8 +53,10 @@
   @extend .centered;
   padding-left: 17%;
   padding-right: 17%;
-  font-size: $big-font-size;
-  margin-top: $spacing-unit;
+  font-size: $base-font-size;
+  @include media-from($bp-med) {
+    font-size: 28px;
+  }
   a {
     display: inline-block;
     font-weight: bold;

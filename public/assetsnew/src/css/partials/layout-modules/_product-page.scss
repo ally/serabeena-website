@@ -40,6 +40,7 @@ article.product {
   border-radius: 4px;
   position: relative;
   overflow: hidden;
+  margin-top: 3%;
   .product-overlay-hover {
     position: absolute;
     top: 0;
@@ -49,7 +50,6 @@ article.product {
     background-color: $accent-color;
     opacity: 0;
     @include transition(all 0.15s linear);
-    
   }
   img {
     display: block;
@@ -94,13 +94,13 @@ article.product {
     }
 
   }
-  &.orange {
+  &.pink {
     border: 4px solid darken($accent-color-2, 3%);
     .product-overlay-hover {
       background-color: $accent-color-2;
     }
   }
-  &.pink {
+  &.orange {
     border: 4px solid darken($accent-color-3, 3%);
     .product-overlay-hover {
       background-color: $accent-color-3;
@@ -110,6 +110,12 @@ article.product {
     border: 4px solid darken($accent-color-4, 3%);
     .product-overlay-hover {
       background-color: $accent-color-4;
+    }
+  }
+  &.yellow {
+    border: 4px solid darken($accent-color-5, 3%);
+    .product-overlay-hover {
+      background-color: $accent-color-5;
     }
   }
 }

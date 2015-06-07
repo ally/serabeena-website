@@ -16,9 +16,11 @@ footer {
   padding-top: $spacing-unit/2;
   padding-bottom: $spacing-unit/2;
   position: relative;
-  // position: fixed;
-  // bottom: 0;
-  // width: 100%;
+  @include media-from($bp-full) {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
 }
 img.logo {
   max-width: 100px;

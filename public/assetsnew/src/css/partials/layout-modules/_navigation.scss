@@ -14,10 +14,6 @@ body.noscroll {
   color: white;
   -webkit-font-smoothing: antialiased;
   
-  @include media-upto($bp-mid) { 
-    padding: 4em 1.5em
-  }
-  
   * {
     color: white;
   }
@@ -29,8 +25,9 @@ body.noscroll {
 
   nav.navigation {
     @include content-block;
+    margin-top: $spacing-unit;
     @include media-from($bp-mid) {
-      margin-top: $spacing-unit*3;
+      margin-top: $spacing-unit*2;
     }
     font-family: $alt-type;
     text-align: center;
@@ -38,7 +35,10 @@ body.noscroll {
       margin: 0;
       padding: 0;
       list-style: none;
-      font-size: $huge-font-size;
+      font-size: $medium-font-size;
+      @include media-from($bp-mid) {
+        font-size: $huge-font-size;
+      }
       li {
         line-height: 1.3;
       }
