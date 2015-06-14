@@ -128,7 +128,7 @@ img{border:0;max-width:100%;pointer-events:none}
 .rsVideoContainer .rsVideoObj,.rsVideoContainer embed,.rsVideoContainer iframe,.rsVideoContainer video{position:absolute;z-index:50;left:0;top:0;width:100%;height:100%}
 .rsVideoContainer.rsIOSVideo embed,.rsVideoContainer.rsIOSVideo iframe,.rsVideoContainer.rsIOSVideo video{box-sizing:border-box;padding-right:44px}
 .rsABlock{top:0;z-index:15}
-img.rsImg{max-width:none}
+img.rsImg{width:100%;max-width:100%}
 .rsNoDrag{cursor:auto}
 .rsLink{top:0;width:100%;height:100%;display:block;z-index:20;background:url(blank.gif)}
 .rsArrowLeft,.rsArrowRight{position:absolute;top:0;bottom:0;height:100%;width:30px;background-repeat:no-repeat;background-position:center center;background-size:50%;-webkit-transform:scale(1);-webkit-transition:all .15s ease-in-out;transition:all .15s ease-in-out}
