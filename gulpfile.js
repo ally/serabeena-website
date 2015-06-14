@@ -11,14 +11,14 @@ var gulp = require('gulp'),
     jshint = require('gulp-jshint');
 
 var src = {
-  root: 'public/assetsnew/src/',
-  css:  'public/assetsnew/src/css/',
-  js:   'public/assetsnew/src/js/',
-  img:  'public/assetsnew/img/',
+  root: 'public/assets/src/',
+  css:  'public/assets/src/css/',
+  js:   'public/assets/src/js/',
+  img:  'public/assets/img/',
   html: 'craft/templates/'
 };
 
-var dest = 'public/assetsnew/dist/';
+var dest = 'public/assets/dist/';
 
 gulp.task('css', function() {
   return sass(src.css+'main.scss', { loadPath: 'bower_components', style: 'expanded'})

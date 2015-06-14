@@ -1,9 +1,9 @@
-{% set more = craft.entries.section(['products']).id('not ' ~ current_entry.id).order('RAND()').limit(3) %}
+{% set more = craft.entries.section(['products']).id('not ' ~ current_entry.id).order('RAND()').limit(4) %}
 
 {% if more|length %}
 
-  <h4>Keep browsing</h4>
-  <div class="more-product-list">
+  <h3>Keep browsing</h3>
+  <div class="product-list">
     {% for entry in more %}
       {% include 'products/_product-intro' with {
         entry : entry

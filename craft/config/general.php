@@ -27,7 +27,7 @@
 
     'local' => array(
       // Config overrides for our local environment
-      'siteUrl' => 'http://serabeena.dev:8888/public/',
+      'siteUrl' => 'http://serabeena.dev:8888/',
       'devMode' => true,
       'userSessionDuration'           => 'P101Y',
       'rememberedUserSessionDuration' => 'P101Y',

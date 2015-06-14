@@ -4,6 +4,8 @@
 
 {% block content %}
 
+  <h1 class="centered margin-bottom--medium">Our Toys</h1>
+  
   <article class="product-list container">
   	{% for entry in craft.entries.section('products').find() %}
       {% include 'products/_product-intro' with {

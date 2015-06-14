@@ -6,16 +6,9 @@
 
 {% block content %}
 	<article class="product">
-    <div class="row">
-      <div class="meta">
-  		  <h1>{{ entry.title }}</h1>
-        <div class="share-module">
-          {% include 'partials/_share' with { 
-            entry : entry, 
-            share_text : share_text 
-          } %}
-        </div>
-      </div>
+    <div class="row centered">
+      
+      <h1 class="margin-bottom--medium">{{ entry.title }}</h1>
 
       <div class="body">
   		  {{ entry.body }}
@@ -26,8 +19,8 @@
     
     {% if images | length %}
       <div class="gallery royalSlider">
-
-<!--         <div class="rsContent">
+        {#
+        <div class="rsContent">
           <img src="../assets/img/Serabeena-095.jpg" />
         </div>
         <div class="rsContent">
@@ -35,18 +28,32 @@
         </div>
         <div class="rsContent">
           <img src="../assets/img/Serabeena-150.jpg" />
-        </div>   -->              
+        </div>
+        #}               
 
         {% for image in images %}
           <div class="rsContent">
             <img src="{{ image.getUrl() }}" />
           </div>
         {% endfor %}
+        
       </div>
     {% endif %}
 
+    <div class="share-module">
+      <a href="/products" class="social-icon back">
+        <svg xmlns="http://www.w3.org/2000/svg" width="44" height="76" viewBox="0 0 44 76" version="1.1"><title>arrow487</title><desc>Created with Sketch.</desc><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g fill="#FFFFFF"><path d="M41.7 41.7L9.6 73.8C7.6 75.8 4.3 75.8 2.3 73.8 0.2 71.8 0.2 68.4 2.3 66.4L30.7 38 2.3 9.6C0.2 7.6 0.2 4.2 2.3 2.2 4.3 0.2 7.6 0.2 9.6 2.2L41.7 34.3C42.8 35.3 43.3 36.7 43.3 38 43.3 39.3 42.8 40.7 41.7 41.7L41.7 41.7Z" transform="translate(21.999625, 38.000000) scale(-1, 1) translate(-21.999625, -38.000000) "/></g></g></svg>
+        <span>product list</span>
+      </a>
+      {% include 'partials/_share' with { 
+        entry : entry, 
+        share_text : share_text 
+      } %}
+
+    </div>
+
 	</article>
-  <article class="more">
+  <article class="more margin-bottom--medium">
     {% include 'products/_related' with {
       current_entry : entry
     } %}
