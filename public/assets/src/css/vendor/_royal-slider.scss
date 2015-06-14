@@ -131,6 +131,10 @@
   height: 100%;
   position: relative;
   cursor: auto;
+  img {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 .rsPreloader {
