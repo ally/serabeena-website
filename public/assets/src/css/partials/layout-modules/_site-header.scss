@@ -1,0 +1,148 @@
+header {
+  z-index: 10;
+}
+header .container {
+  @include content-block;
+}
+
+.site-header {
+  width: 100%;
+  // position: fixed;
+  top: 0;
+  right: 0;
+  background-color: $accent-color;
+  @include transition(all .25s ease-in-out);
+  backface-visibility: hidden;
+  .container {
+    @include simple-grid(2);
+    text-align: center;
+    position: relative;
+    width: 100%;
+    padding-top: $spacing-unit/2;
+    padding-bottom: $spacing-unit/2;
+    @include clearfix;
+  }
+
+  .site-title {
+    text-align: left;
+  }
+
+  .menu {
+    text-align: right; 
+    font-family: $alt-type;
+    font-size: $medium-font-size;
+    float: right;
+    span {
+      display: none;
+    }
+    p {
+      margin: 0;
+      line-height: 1;
+      cursor: pointer;
+      float: right;
+      &:hover:after {
+        @include transform(scale(1.15));
+      }
+      &:after {
+        content: " ";    
+        border-color: $color-light;
+        border-style: solid none double;
+        border-width: 3px 0 9px;
+        display: inline-block;
+        height: 3px;
+        width: 1.25rem;
+        margin-left: 0.5em;
+        vertical-align: top;
+        margin-top: 6px;
+        @include transform(scale(1));
+        @include transition (transform 0.1s linear);
+
+        @include media-from($bp-med) {
+          margin-top: 10px;
+        }
+        .visible & {
+          border: none;
+          content: "×";
+          height: auto;
+          width: auto;
+          height: 32px;
+          vertical-align: middle;
+          margin-top: -15px;
+          font-size: 36px;
+          @include media-from($bp-med) {
+            font-size: 42px;
+          }
+        }
+      }
+    }
+  }
+  h1 {
+    font-family: $base-type;
+    font-size: $medium-font-size;
+    line-height: 1;
+    margin: 0;
+  }
+  a {
+    text-decoration: none;
+    color: $color-light;
+    background: url("../../img/serabeena-wordmark.png") center center no-repeat;
+    background-size: 100%;
+    display: block;
+    white-space: no-wrap;
+    width: 126px;
+    height: 25px;
+    @include transform(scale(1));
+    @include transition (transform 0.1s linear);
+    &:hover {
+      @include transform(scale(1.05));
+    }
+    @include media-from($bp-med) {
+      width: 180px;
+      height: 36px;
+    }
+    span {
+      display: none;
+    }
+  }
+  
+  svg {
+    display: block;  
+    margin: 0 auto;
+    path {
+      fill: $type-color;
+    }
+    width: 95px;
+    height: 70px;
+  }
+
+  &.headroom--not-top.slideUp {
+    @include transition-delay(1s);
+  }
+
+  &.headroom--not-top {
+    background-color: rgba($accent-color, 0.6);
+    .logo {
+      img {
+        width: auto;
+        height: 3em;
+      } 
+    }
+  }
+
+  &.slideDown {
+    @include transform(translateY(0));
+  }
+
+  &.slideUp {
+    @include transform(translateY(-100%));
+  }
+
+  #overlay & {
+    // position: fixed;
+  }
+
+  .nav-open & {
+    background-color: transparent !important;
+  }
+
+}
