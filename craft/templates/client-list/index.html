@@ -4,16 +4,16 @@
 
 {% block content %}
   <article class="container">
-    <h1>{{ entry.title }}</h1>
+    <h1 class="margin-bottom--medium">{{ entry.title }}</h1>
     <ul class="plain">
       {% for block in entry.list %}
         <li>
           {% if block.clientUrl | length %}
-            <a href="{{ block.clientUrl }}">{{ block.clientName }}</a>
+            <a href="{{ block.clientUrl }}" class="colorful-type">{{ block.clientName }}</a>
           {% else %}
-            {{ block.clientName }}
+            <span class="colorful-type">{{ block.clientName }}</span>
           {% endif %}
-          <span>{{ block.location }}</span>
+          <span class="meta-type">{{ block.location }}</span>
         </li>
       {% endfor %}
     </ul>

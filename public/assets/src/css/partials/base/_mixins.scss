@@ -61,6 +61,11 @@
   -webkit-font-smoothing: antialiased;
 }
 
-
-// type styles:
+@mixin hover-animation {
+  @include transform(scale(1));
+  @include transition (transform 0.1s linear);
+  &:hover {
+    @include transform(scale(1.05));
+  }
+}
 

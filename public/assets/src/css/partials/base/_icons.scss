@@ -5,9 +5,9 @@
 a.social-icon {
   display: inline-block;
   text-decoration: none;
-  @include transform(scale(1));
-  @include transition (transform 0.1s linear);
+  @include hover-animation;
   margin-right: 0.5em;
+  margin-bottom: 0.5em;
   background-color: $accent-color;
   border-radius: 3px;
   padding: 4px;
@@ -18,9 +18,6 @@ a.social-icon {
   }
   span {
     display: none;
-  }
-  &:hover {
-    @include transform(scale(1.05));  
   }
   svg {
     display: inline-block;

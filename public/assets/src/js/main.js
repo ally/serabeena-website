@@ -38,22 +38,9 @@ $(function() {
 });
 
 
-// function randOrd() {
-//   return (Math.round(Math.random())-0.5); 
-// }
-
-// $(function() {
-//   var classes = [ 'blue', 'pink', 'yellow', 'purple', 'orange' ];
-//   classes.sort( randOrd );
-//   $('.color-me').each(function(i, val) {
-//     $(this).addClass(classes[i]);
-//   });
-// });
-
 $(function() {
   var classes = ["blue", "pink", "yellow", "orange", "purple"];
-
-    $(".color-me").each(function(){
+    $(".color-me").each(function() {
       $(this).addClass(classes[~~(Math.random()*classes.length)]);
     });
 });

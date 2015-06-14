@@ -42,9 +42,5 @@ img {
   display: block;
   max-width: 140px;
   margin: $spacing-unit auto;
-  @include transform(scale(1));
-  @include transition (transform 0.1s linear);
-  &:hover {
-    @include transform(scale(1.05));  
-  }
+  @include hover-animation;
 }

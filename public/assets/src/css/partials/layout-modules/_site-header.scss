@@ -91,11 +91,7 @@ header .container {
     white-space: no-wrap;
     width: 126px;
     height: 25px;
-    @include transform(scale(1));
-    @include transition (transform 0.1s linear);
-    &:hover {
-      @include transform(scale(1.05));
-    }
+    @include hover-animation;
     @include media-from($bp-med) {
       width: 180px;
       height: 36px;

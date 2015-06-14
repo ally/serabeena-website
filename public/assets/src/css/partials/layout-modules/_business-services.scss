@@ -1,0 +1,11 @@
+.business-and-services-text {
+  img {
+    display: block;
+    margin: $spacing-unit auto;
+    width: 70%;
+    height: 70%;
+    @include media-from($bp-med) {
+      margin: $spacing-unit*2 auto;
+    }
+  }  
+}

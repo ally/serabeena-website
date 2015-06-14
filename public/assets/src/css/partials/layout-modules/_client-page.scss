@@ -11,17 +11,34 @@ ul.plain {
   list-style: none;
   margin: 0;
   padding: 0;
+
   li {
-    margin-bottom: 1em;
+    margin-bottom: 1.5em;
+    .colorful-type {
+      display: block;
+      font-family: $alt-type;
+      font-size: 21px;
+      @include media-from($bp-med) {
+        font-size: 28px;
+      }
+      text-decoration: none;
+      color: $link-color;
+      margin-bottom: 0.25em;
+      background: -webkit-linear-gradient($accent-color-4, $accent-color-2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      @include hover-animation;
+    }
   }
-  a {
-    display: block;
-    margin-bottom: 0.25em;
-    font-size: $medium-font-size;
-    text-decoration: none;
-    color: $type-color;
+  li:nth-child(2n) {
+    .colorful-type {
+      background: -webkit-linear-gradient($accent-color-3, $accent-color-5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
   }
-  span {
+  
+  .meta-type {
     display: block;
     text-transform: uppercase;
     font-size: $tiny-font-size;
