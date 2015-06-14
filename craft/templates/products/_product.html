@@ -32,9 +32,9 @@
         #}               
 
         {% for image in images %}
-          <div class="rsContent">
-            <img src="{{ image.getUrl() }}" />
-          </div>
+          <!-- <div class="rsContent"> -->
+          <img src="{{ image.getUrl() }}" class="rsImg" />
+          <!-- </div> -->
         {% endfor %}
         
       </div>
