@@ -1,17 +1,4 @@
-
-// $(function() {
-//   $("header.headroom").headroom({
-//     "offset": 50,
-//     "tolerance": 5,
-//     "classes": {
-//       "initial": "animated",
-//       "pinned": "bounce",
-//       "unpinned": "slideUp"
-//     }
-//   });
-// });
-
-
+// init nav overlay
 $(function() {
 
   var nav = $(".navTrigger");
@@ -27,17 +14,15 @@ $(function() {
   var toggleOverlay = function() {
     return $("#overlay").hasClass('visible') ? hideOverlay() : showOverlay();
   };
- 
 
   nav.on('click', function(event) {
     toggleOverlay();
     return false;
   });
 
-
 });
 
-
+// assign random color classes
 $(function() {
   var classes = ["blue", "pink", "yellow", "orange", "purple"];
     $(".color-me").each(function() {
@@ -45,15 +30,15 @@ $(function() {
     });
 });
 
+// try to prevent easy drag and drop of images:
 $(function() {
   $("img").mousedown(function(){
     return false;
   });
 });
 
-
+// init slideshow
 $(function() {
-  
   $('.royalSlider').royalSlider({
     arrowsNav: true,
     loop: true,
