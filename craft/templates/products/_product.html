@@ -1,7 +1,13 @@
 {% extends "_layout" %}
 
 {% set bodyClass = "product-page" %}
+{% set title = entry.title %}
 {% set share_text = "#{entry.title} at Serabeena #{entry.url}" %}
+{% set og_type = "product" %}
+{% set og_url = entry.url %}
+{% if entry.images|length %}
+  {% set og_image = siteUrl ~ entry.images.first().getUrl('ogImage') %}
+{% endif %}
 
 
 {% block content %}
@@ -32,9 +38,7 @@
         #}               
 
         {% for image in images %}
-          <!-- <div class="rsContent"> -->
           <img src="{{ image.getUrl() }}" class="rsImg" />
-          <!-- </div> -->
         {% endfor %}
         
       </div>

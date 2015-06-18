@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
+	<title>{% if title is defined %}{{ title }} - {% endif %}{{ siteName }}</title>
 	<meta charset="utf-8" />
 	<meta http-equiv="Content-Type" content="application/xhtml+xml">
-	<title>{% if title is defined %}{{ title }} - {% endif %}{{ siteName }}</title>
-	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="{% if meta_description is defined %}{{ meta_description }}{% else %}Serabeena – we make toys that spark creativity and learning{% endif %}">
+  <meta property="og:description" content="{% if meta_description is defined %}{{ meta_description }}{% else %}Serabeena – we make toys that spark creativity and learning{% endif %}">
+  <meta property="og:site_name" content="{{ siteName }}">
+  <meta property="og:type" content="{% if og_type is defined %}{{ og_type }}{% else %}article{% endif %}">
+  <meta property="og:title" content="{% if title is defined %}{{ title }} - {{ siteName }}{% else %}{{ siteName }}{% endif %}">
+  <meta property="og:image" content="{% if og_image is defined %}{{ og_image }}{% else %}{{ siteUrl }}assets/dist/img/serabeena-og-default.jpg{% endif %}">
+  <meta property="og:url" content="{% if og_url is defined %}{{ og_url }}{% else %}{{ siteUrl }}{% endif %}">
+
+
 	<link rel="home" href="{{ siteUrl }}" />
 
 	<link rel="stylesheet" type="text/css" href="/assets/src/css/vendor/animate.min.css">

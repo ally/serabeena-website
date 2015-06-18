@@ -106,10 +106,12 @@ class UsersController extends BaseController
 		$this->requirePostRequest();
 
 		$userId = craft()->request->getPost('userId');
+		$originalUserId = craft()->userSession->getId();
 
 		if (craft()->userSession->loginByUserId($userId))
 		{
 			craft()->userSession->setNotice(Craft::t('Logged in.'));
+			craft()->httpSession->add(UserSessionService::USER_IMPERSONATE_KEY, $originalUserId);
 
 			$this->_handleSuccessfulLogin(true);
 		}
@@ -127,8 +129,14 @@ class UsersController extends BaseController
 	 */
 	public function actionGetAuthTimeout()
 	{
-		echo craft()->userSession->getAuthTimeout();
-		craft()->end();
+		$return = array('timeout' => craft()->userSession->getAuthTimeout());
+
+		if (craft()->config->get('enableCsrfProtection'))
+		{
+			$return['csrfTokenValue'] = craft()->request->getCsrfToken();
+		}
+
+		$this->returnJson($return);
 	}
 
 	/**
@@ -137,6 +145,15 @@ class UsersController extends BaseController
 	public function actionLogout()
 	{
 		craft()->userSession->logout(false);
+
+		if (craft()->config->get('enableCsrfProtection'))
+		{
+			// Manually nuke the CSRF cookie (if there is one).
+			craft()->request->deleteCookie(craft()->request->csrfTokenName);
+
+			// Generate a new one.
+			craft()->request->getCsrfToken();
+		}
 
 		if (craft()->request->isAjaxRequest())
 		{
@@ -276,11 +293,7 @@ class UsersController extends BaseController
 				craft()->userSession->processUsernameCookie($userToProcess->username);
 
 				// Send them to the set password template.
-				$url = craft()->config->getSetPasswordPath($code, $id, $userToProcess);
-
-				$this->_processSetPasswordPath($userToProcess);
-
-				$this->renderTemplate($url, array(
+				$this->_renderSetPasswordTemplate($userToProcess, array(
 					'code'    => $code,
 					'id'      => $id,
 					'newUser' => ($userToProcess->password ? false : true),
@@ -293,8 +306,6 @@ class UsersController extends BaseController
 			$code          = craft()->request->getRequiredPost('code');
 			$id            = craft()->request->getRequiredParam('id');
 			$userToProcess = craft()->users->getUserByUid($id);
-
-			$url = craft()->config->getSetPasswordPath($code, $id, $userToProcess);
 
 			// See if we still have a valid token.
 			$isCodeValid = craft()->users->isVerificationCodeValidForUser($userToProcess, $code);
@@ -330,8 +341,8 @@ class UsersController extends BaseController
 				// Can they access the CP?
 				if ($userToProcess->can('accessCp'))
 				{
-					// Send them to the login page
-					$url = craft()->config->getLoginPath();
+					// Send them to the CP login page
+					$url = UrlHelper::getCpUrl(craft()->config->getCpLoginPath());
 				}
 				else
 				{
@@ -345,12 +356,9 @@ class UsersController extends BaseController
 
 			craft()->userSession->setNotice(Craft::t('Couldn’t update password.'));
 
-			$this->_processSetPasswordPath($userToProcess);
+			$errors = $userToProcess->getErrors('newPassword');
 
-			$errors = array();
-			$errors = array_merge($errors, $userToProcess->getErrors('newPassword'));
-
-			$this->renderTemplate($url, array(
+			$this->_renderSetPasswordTemplate($userToProcess, array(
 				'errors' => $errors,
 				'code' => $code,
 				'id' => $id,
@@ -853,7 +861,7 @@ class UsersController extends BaseController
 
 		// If editing an existing user and either of these properties are being changed,
 		// require the user's current password for additional security
-		if (!$isNewUser && ($newEmail || $user->newPassword))
+		if (!$isNewUser && (!empty($newEmail) || $user->newPassword))
 		{
 			if (!$this->_verifyExistingPassword())
 			{
@@ -957,8 +965,6 @@ class UsersController extends BaseController
 				$user->email = $originalEmail;
 			}
 
-			craft()->userSession->setNotice(Craft::t('User saved.'));
-
 			if (isset($_POST['redirect']) && mb_strpos($_POST['redirect'], '{userId}') !== false)
 			{
 				craft()->deprecator->log('UsersController::saveUser():userId_redirect', 'The {userId} token within the ‘redirect’ param on users/saveUser requests has been deprecated. Use {id} instead.');
@@ -975,17 +981,37 @@ class UsersController extends BaseController
 				}
 			}
 
-			$this->redirectToPostedUrl($user);
+			if (craft()->request->isAjaxRequest())
+			{
+				$return['success']   = true;
+				$return['id']        = $user->id;
+
+				$this->returnJson($return);
+			}
+			else
+			{
+				craft()->userSession->setNotice(Craft::t('User saved.'));
+				$this->redirectToPostedUrl($user);
+			}
 		}
 		else
 		{
-			craft()->userSession->setError(Craft::t('Couldn’t save user.'));
-		}
+			if (craft()->request->isAjaxRequest())
+			{
+				$this->returnJson(array(
+					'errors' => $user->getErrors(),
+				));
+			}
+			else
+			{
+				craft()->userSession->setError(Craft::t('Couldn’t save user.'));
 
-		// Send the account back to the template
-		craft()->urlManager->setRouteVariables(array(
-			'account' => $user
-		));
+				// Send the account back to the template
+				craft()->urlManager->setRouteVariables(array(
+					'account' => $user
+				));
+			}
+		}
 	}
 
 	/**
@@ -1102,10 +1128,7 @@ class UsersController extends BaseController
 			$source = craft()->request->getRequiredPost('source');
 
 			// Strip off any querystring info, if any.
-			if (($qIndex = mb_strpos($source, '?')) !== false)
-			{
-				$source = mb_substr($source, 0, mb_strpos($source, '?'));
-			}
+			$source = UrlHelper::stripQueryString($source);
 
 			$user = craft()->users->getUserById($userId);
 			$userName = AssetsHelper::cleanAssetName($user->username, false);
@@ -1192,11 +1215,17 @@ class UsersController extends BaseController
 			$this->_noUserExists($userId);
 		}
 
+		// Only allow activation emails to be send to pending users.
+		if ($user->getStatus() !== UserStatus::Pending)
+		{
+			throw new Exception(Craft::t('Invalid account status for user ID “{id}”.', array('id' => $userId)));
+		}
+
 		craft()->users->sendActivationEmail($user);
 
 		if (craft()->request->isAjaxRequest())
 		{
-			die('great!');
+			$this->returnJson(array('success' => true));
 		}
 		else
 		{
@@ -1485,30 +1514,30 @@ class UsersController extends BaseController
 	}
 
 	/**
-	 * @param $user
+	 * Renders the Set Password template for a given user.
 	 *
-	 * @return null
+	 * @param UserModel $user
+	 * @param array     $variables
 	 */
-	private function _processSetPasswordPath($user)
+	private function _renderSetPasswordTemplate(UserModel $user, $variables)
 	{
-		// If the user cannot access the CP
+		// If the user doesn't have CP access, see if a custom Set Password template exists
 		if (!$user->can('accessCp'))
 		{
-			// Make sure we're looking at the front-end templates path to start with.
 			craft()->path->setTemplatesPath(craft()->path->getSiteTemplatesPath());
+			$templatePath = craft()->config->getLocalized('setPasswordPath');
 
-			// If they haven't defined a front-end set password template
-			if (!craft()->templates->doesTemplateExist(craft()->config->getLocalized('setPasswordPath')))
+			if (craft()->templates->doesTemplateExist($templatePath))
 			{
-				// Set PathService to use the CP templates path instead
-				craft()->path->setTemplatesPath(craft()->path->getCpTemplatesPath());
+				$this->renderTemplate($templatePath, $variables);
+				return;
 			}
 		}
-		// The user can access the CP, so send them to Craft's set password template in the dashboard.
-		else
-		{
-			craft()->path->setTemplatesPath(craft()->path->getCpTemplatesPath());
-		}
+
+		// Otherwise go with the CP's template
+		craft()->path->setTemplatesPath(craft()->path->getCpTemplatesPath());
+		$templatePath = craft()->config->getCpSetPasswordPath();
+		$this->renderTemplate($templatePath, $variables);
 	}
 
 	/**

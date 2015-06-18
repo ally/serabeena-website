@@ -255,6 +255,7 @@ class UsersService extends BaseApplicationComponent
 		else
 		{
 			$userRecord = new UserRecord();
+			$userRecord->pending = true;
 		}
 
 		// Set the user record attributes
@@ -269,8 +270,6 @@ class UsersService extends BaseApplicationComponent
 		$userRecord->preferredLocale       = $user->preferredLocale;
 		$userRecord->weekStartDay          = $user->weekStartDay;
 		$userRecord->unverifiedEmail       = $user->unverifiedEmail;
-
-		$this->_processSaveUserStatus($userRecord, $user->status);
 
 		$userRecord->validate();
 		$user->addErrors($userRecord->getErrors());
@@ -299,12 +298,6 @@ class UsersService extends BaseApplicationComponent
 
 		try
 		{
-			// Set a default status of pending, if one wasn't supplied.
-			if (!$user->status)
-			{
-				$user->pending = true;
-			}
-
 			// Fire an 'onBeforeSaveUser' event
 			$event = new Event($this, array(
 				'user'      => $user,
@@ -344,8 +337,10 @@ class UsersService extends BaseApplicationComponent
 					if ($user->username != $oldUsername)
 					{
 						// Rename the user's photo directory
-						$oldFolder = craft()->path->getUserPhotosPath().$oldUsername;
-						$newFolder = craft()->path->getUserPhotosPath().$user->username;
+						$cleanOldUsername = AssetsHelper::cleanAssetName($oldUsername, false);
+						$cleanUsername = AssetsHelper::cleanAssetName($user->username, false);
+						$oldFolder = craft()->path->getUserPhotosPath().$cleanOldUsername;
+						$newFolder = craft()->path->getUserPhotosPath().$cleanUsername;
 
 						if (IOHelper::folderExists($newFolder))
 						{
@@ -395,6 +390,23 @@ class UsersService extends BaseApplicationComponent
 				$this->onSaveProfile(new Event($this, array(
 					'user' => $user
 				)));
+			}
+
+			// They got unsuspended
+			if ($userRecord->suspended == true && $user->suspended == false)
+			{
+				$this->unsuspendUser($user);
+			}
+			// They got suspended
+			else if ($userRecord->suspended == false && $user->suspended == true)
+			{
+				$this->suspendUser($user);
+			}
+
+			// They got activated
+			if ($userRecord->pending == true && $user->pending == false)
+			{
+				$this->activateUser($user);
 			}
 		}
 
@@ -531,18 +543,21 @@ class UsersService extends BaseApplicationComponent
 		$unhashedVerificationCode = $this->_setVerificationCodeOnUserRecord($userRecord);
 		$userRecord->save();
 
+		$path = craft()->config->get('actionTrigger').'/users/setpassword';
+		$params = array(
+			'code' => $unhashedVerificationCode,
+			'id' => $userRecord->uid
+		);
+		$scheme = craft()->request->isSecureConnection() ? 'https' : 'http';
+
 		if ($user->can('accessCp'))
 		{
-			$url = UrlHelper::getActionUrl('users/setpassword', array('code' => $unhashedVerificationCode, 'id' => $userRecord->uid), craft()->request->isSecureConnection() ? 'https' : 'http');
+			return UrlHelper::getCpUrl($path, $params, $scheme);
 		}
 		else
 		{
-			// We want to hide the CP trigger if they don't have access to the CP.
-			$path = craft()->config->get('actionTrigger').'/users/setpassword';
-			$url = UrlHelper::getSiteUrl($path, array('code' => $unhashedVerificationCode, 'id' => $userRecord->uid), craft()->request->isSecureConnection() ? 'https' : 'http');
+			return UrlHelper::getSiteUrl($path, $params, $scheme);
 		}
-
-		return $url;
 	}
 
 	/**
@@ -557,7 +572,7 @@ class UsersService extends BaseApplicationComponent
 	 */
 	public function saveUserPhoto($fileName, Image $image, UserModel $user)
 	{
-		$userName = IOHelper::cleanFilename($user->username);
+		$userName = AssetsHelper::cleanAssetName($user->username, false);
 		$userPhotoFolder = craft()->path->getUserPhotosPath().$userName.'/';
 		$targetFolder = $userPhotoFolder.'original/';
 
@@ -592,7 +607,8 @@ class UsersService extends BaseApplicationComponent
 	 */
 	public function deleteUserPhoto(UserModel $user)
 	{
-		$folder = craft()->path->getUserPhotosPath().$user->username;
+		$username = AssetsHelper::cleanAssetName($user->username, false);
+		$folder = craft()->path->getUserPhotosPath().$username;
 
 		if (IOHelper::folderExists($folder))
 		{
@@ -745,7 +761,6 @@ class UsersService extends BaseApplicationComponent
 				$user->setActive();
 				$userRecord->verificationCode = null;
 				$userRecord->verificationCodeIssuedDate = null;
-				$userRecord->lockoutDate = null;
 				$userRecord->save();
 
 				// If they have an unverified email address, now is the time to set it to their primary email address
@@ -798,11 +813,21 @@ class UsersService extends BaseApplicationComponent
 		if ($user->unverifiedEmail)
 		{
 			$userRecord = $this->_getUserRecordById($user->id);
+			$oldEmail = $userRecord->email;
 			$userRecord->email = $user->unverifiedEmail;
 
 			if (craft()->config->get('useEmailAsUsername'))
 			{
 				$userRecord->username = $user->unverifiedEmail;
+
+				$oldProfilePhotoPath = craft()->path->getUserPhotosPath().AssetsHelper::cleanAssetName($oldEmail);
+				$newProfilePhotoPath = craft()->path->getUserPhotosPath().AssetsHelper::cleanAssetName($user->unverifiedEmail);
+
+				// Update the user profile photo folder name, if it exists.
+				if (IOHelper::folderExists($oldProfilePhotoPath))
+				{
+					IOHelper::rename($oldProfilePhotoPath, $newProfilePhotoPath);
+				}
 			}
 
 			$userRecord->unverifiedEmail = null;
@@ -848,6 +873,7 @@ class UsersService extends BaseApplicationComponent
 
 				$userRecord->invalidLoginCount = $user->invalidLoginCount = null;
 				$userRecord->invalidLoginWindowStart = null;
+				$userRecord->lockoutDate = $user->lockoutDate = null;
 
 				$userRecord->save();
 				$success = true;
@@ -1517,7 +1543,7 @@ class UsersService extends BaseApplicationComponent
 	 */
 	private function _setVerificationCodeOnUserRecord(UserRecord $userRecord)
 	{
-		$unhashedCode = StringHelper::UUID();
+		$unhashedCode = craft()->security->generateRandomString(32);
 		$hashedCode = craft()->security->hashPassword($unhashedCode);
 		$userRecord->verificationCode = $hashedCode;
 		$userRecord->verificationCodeIssuedDate = DateTimeHelper::currentUTCDateTime();
@@ -1654,49 +1680,5 @@ class UsersService extends BaseApplicationComponent
 		}
 
 		return $success;
-	}
-
-	/**
-	 * @param $userRecord
-	 * @param $status
-	 */
-	private function _processSaveUserStatus($userRecord, $status)
-	{
-		switch ($status)
-		{
-			case UserStatus::Active:
-			{
-				$userRecord->archived = false;
-				$userRecord->locked = false;
-				$userRecord->pending = false;
-				$userRecord->suspended = false;
-
-				break;
-			}
-
-			case UserStatus::Pending:
-			{
-				$userRecord->pending = true;
-				break;
-			}
-
-			case UserStatus::Locked:
-			{
-				$userRecord->locked = true;
-				break;
-			}
-
-			case UserStatus::Suspended:
-			{
-				$userRecord->suspended = true;
-				break;
-			}
-
-			case UserStatus::Archived:
-			{
-				$userRecord->archived = true;
-				break;
-			}
-		}
 	}
 }

@@ -273,7 +273,7 @@ class AssetSourcesService extends BaseApplicationComponent
 			$source->id = $sourceId;
 			$source->name = TempAssetSourceType::sourceName;
 			$source->type = TempAssetSourceType::sourceType;
-			$source->settings = array('path' => craft()->path->getAssetsTempSourcePath(), 'url' => UrlHelper::getResourceUrl('tempassets').'/');
+			$source->settings = array('path' => craft()->path->getAssetsTempSourcePath(), 'url' => rtrim(UrlHelper::getResourceUrl(), '/').'/tempassets/');
 			return $source;
 		}
 		else
@@ -407,6 +407,19 @@ class AssetSourcesService extends BaseApplicationComponent
 
 				throw $e;
 			}
+
+            if ($isNewSource && $this->_fetchedAllSources)
+            {
+                $this->_sourcesById[$source->id] = $source;
+            }
+
+            if (isset($this->_viewableSourceIds))
+            {
+                if (craft()->userSession->checkPermission('viewAssetSource:'.$source->id))
+                {
+                    $this->_viewableSourceIds[] = $source->id;
+                }
+            }
 
 			return true;
 		}
