@@ -27,7 +27,13 @@ return array(
   ),
 
   'live' => array(
-    // Config overrides for our live environment
+    'server' => 'serabeena.mysql.eu1.frbit.com',
+
+    'user' => 'serabeena',
+
+    'password' => 'aZyNd03RTxGaGPS9zJTAvJ40',
+
+    'database' => 'serabeena',
   ),
 
   'stage' => array(

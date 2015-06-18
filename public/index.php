@@ -11,7 +11,10 @@ switch ($_SERVER['SERVER_NAME'])
   // that identifies this environment that we can 
   // use in our multi-environment config
 
-  case 'serabeena.com.au' :
+  case 'serabeena.com.au'     :
+  case 'serabeena.com'        :
+  case 'www.serabeena.com.au' :
+  case 'www.serabeena.com'    :
     define('CRAFT_ENVIRONMENT', 'live');
     break;
 

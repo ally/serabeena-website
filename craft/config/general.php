@@ -14,7 +14,7 @@
 
     'live' => array(
       // Config overrides for our live environment
-      'siteUrl' => 'http://serabeena.com.au/',
+      'siteUrl' => 'http://serabeena.com/',
       'omitScriptNameInUrls' => true,
     ),
 
