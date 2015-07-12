@@ -7,7 +7,7 @@
   <h1 class="centered margin-bottom--medium">Our Toys</h1>
   
   <article class="product-list container">
-  	{% for entry in craft.entries.section('products').find() %}
+  	{% for entry in craft.entries.section('products').order('lft') %}
       {% include 'products/_product-intro' with {
         entry : entry
       } %}
