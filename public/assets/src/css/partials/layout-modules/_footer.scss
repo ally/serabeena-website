@@ -23,11 +23,11 @@ footer {
       width: 100%;
     }
   }
-  @include media-from($bp-full) {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-  }
+  // @include media-from($bp-full) {
+    // position: fixed;
+    // bottom: 0;
+    // width: 100%;
+  // }
 }
 img.logo {
   max-width: 100px;

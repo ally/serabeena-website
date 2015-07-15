@@ -825,6 +825,10 @@ img {
   position: relative;
   cursor: auto;
 }
+.rsContent img {
+  width: 100%;
+  max-width: 100%;
+}
 
 .rsPreloader {
   position: absolute;
@@ -1251,13 +1255,6 @@ footer {
 }
 @media screen and (min-width: 800px) {
   .fixed-footer footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-  }
-}
-@media screen and (min-width: 1360px) {
-  footer {
     position: fixed;
     bottom: 0;
     width: 100%;
